@@ -23,6 +23,8 @@ app.use('/api/students', require('./routes/student.routes'))
 app.use('/api/fees', require('./routes/fee.routes'))
 app.use('/api/dashboard', require('./routes/dashboard.routes'))
 app.use('/api/staff', require("./routes/staff.routes"));
+app.use('/api/student-portal', require('./routes/studentPortal.routes'))
+
 // error handler
 app.use(errorHandler)
 
