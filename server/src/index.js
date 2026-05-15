@@ -24,7 +24,7 @@ app.use('/api/fees', require('./routes/fee.routes'))
 app.use('/api/dashboard', require('./routes/dashboard.routes'))
 app.use('/api/staff', require("./routes/staff.routes"));
 app.use('/api/student-portal', require('./routes/studentPortal.routes'))
-
+app.use('/api/institute', require('./routes/institute.routes'))
 // error handler
 app.use(errorHandler)
 

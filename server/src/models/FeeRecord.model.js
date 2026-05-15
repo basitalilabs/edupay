@@ -41,6 +41,10 @@ const feeRecordSchema = new mongoose.Schema({
   paidAt: {
     type: Date,
     default: null
+  },
+  receiptNumber: {
+    type: String,
+    default: null
   }
 }, { timestamps: true })
 
