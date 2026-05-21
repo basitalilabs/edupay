@@ -4,10 +4,13 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
+const startOverdueReminder = require('./utils/overdueReminder')
+
 
 connectDB();
 
 const app = express()
+startOverdueReminder()
 
 app.use(cors({ origin: process.env.CLIENT_URI }))
 app.use(express.json())
@@ -19,14 +22,14 @@ app.get('/', (req, res) => {
 
 // api routes
 app.use('/api/auth', require('./routes/auth.routes'));
-app.use('/api/students', require('./routes/student.routes'))
-app.use('/api/fees', require('./routes/fee.routes'))
-app.use('/api/dashboard', require('./routes/dashboard.routes'))
+app.use('/api/students', require('./routes/student.routes'));
+app.use('/api/fees', require('./routes/fee.routes'));
+app.use('/api/dashboard', require('./routes/dashboard.routes'));
 app.use('/api/staff', require("./routes/staff.routes"));
-app.use('/api/student-portal', require('./routes/studentPortal.routes'))
+app.use('/api/student-portal', require('./routes/studentPortal.routes'));
 app.use('/api/institute', require('./routes/institute.routes'))
-app.use('/api/receipt', require('./routes/receipt.routes'))
-app.use('/api/challan', require('./routes/challan.routes'))
+app.use('/api/receipt', require('./routes/receipt.routes'));
+app.use('/api/challan', require('./routes/challan.routes'));
 // error handler
 app.use(errorHandler)
 
