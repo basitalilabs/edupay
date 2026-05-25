@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const feeRecordSchema = new mongoose.Schema({
+const challanSchema = new mongoose.Schema({
   studentId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Student',
@@ -21,36 +21,32 @@ const feeRecordSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  totalFee: {
+  totalAmount: {
     type: Number,
     required: true
   },
-  paidAmount: {
-    type: Number,
-    default: 0
-  },
-  dueAmount: {
-    type: Number,
+  dueDate: {
+    type: Date,
     required: true
   },
   status: {
     type: String,
-    enum: ['paid', 'unpaid', 'partial'],
-    default: 'unpaid'
+    enum: ['pending', 'paid', 'expired'],
+    default: 'pending'
+  },
+  challanNumber: {
+    type: String,
+    default: null
   },
   paidAt: {
     type: Date,
     default: null
-  },
-  receiptNumber: {
-    type: String,
-    default: null
   }
 }, { timestamps: true })
 
-feeRecordSchema.index(
+challanSchema.index(
   { studentId: 1, month: 1, year: 1 },
   { unique: true }
 )
 
-module.exports = mongoose.model('FeeRecord', feeRecordSchema)
+module.exports = mongoose.model('Challan', challanSchema)
