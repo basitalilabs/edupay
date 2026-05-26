@@ -170,10 +170,108 @@ const getInstituteFees = asyncHandler(async (req, res) => {
     });
 });
 
+// @route GET /api/fees/structures
+const getFeeStructures = asyncHandler(async (req, res) => {
+  const structures = await FeeStructure.find({
+    instituteId: req.instituteId
+  }).sort({ class: 1 })
+
+  res.json({
+    success: true,
+    count: structures.length,
+    data: structures
+  });
+});
+
+// @route PUT /api/fees/structure/:id
+const updateFeeStructure = asyncHandler(async (req, res) => {
+  const { monthlyAmount, academicYear } = req.body
+
+  const structure = await FeeStructure.findOne({
+    _id: req.params.id,
+    instituteId: req.instituteId
+  })
+
+  if (!structure) {
+    res.status(404)
+    throw new Error('Fee structure not found')
+  }
+
+  structure.monthlyAmount = monthlyAmount || structure.monthlyAmount
+  structure.academicYear = academicYear || structure.academicYear
+
+  await structure.save()
+
+  res.json({
+    success: true,
+    message: 'Fee structure updated successfully',
+    data: structure
+  });
+});
+
+
+// @route DELETE /api/fees/structure/:id
+const deleteFeeStructure = asyncHandler(async (req, res) => {
+  const structure = await FeeStructure.findOne({
+    _id: req.params.id,
+    instituteId: req.instituteId
+  })
+
+  if (!structure) {
+    res.status(404)
+    throw new Error('Fee structure not found')
+  }
+
+  await structure.deleteOne()
+
+  res.json({
+    success: true,
+    message: 'Fee structure deleted successfully'
+  });
+});
+
+// @route PUT /api/fees/record/:id
+const updateFeeRecord = asyncHandler(async (req, res) => {
+  const { paidAmount } = req.body
+
+  if (!paidAmount) {
+    res.status(400)
+    throw new Error('Please provide paid amount')
+  }
+
+  const feeRecord = await FeeRecord.findOne({
+    _id: req.params.id,
+    instituteId: req.instituteId
+  })
+
+  if (!feeRecord) {
+    res.status(404)
+    throw new Error('Fee record not found')
+  }
+
+  const dueAmount = feeRecord.totalFee - paidAmount
+
+  feeRecord.paidAmount = paidAmount
+  feeRecord.dueAmount = dueAmount
+  feeRecord.status = dueAmount <= 0 ? 'paid' : dueAmount === feeRecord.totalFee ? 'unpaid' : 'partial'
+  feeRecord.paidAt = dueAmount <= 0 ? new Date() : null
+
+  await feeRecord.save()
+
+  res.json({
+    success: true,
+    message: 'Fee record updated successfully',
+    data: feeRecord
+  })
+})
 
 module.exports = {
     createFeeStructure,
+    updateFeeStructure,
+    deleteFeeStructure,
+    updateFeeRecord,
     recordPayment,
     getStudentFees,
+    getFeeStructures,
     getInstituteFees
 }

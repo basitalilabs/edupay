@@ -37,7 +37,7 @@ const studentSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 studentSchema.index(
-    { rollNo: 1, instituteId: 1 },
+    { rollNo: 1, class: 1, instituteId: 1 },
     { unique: true }
 )
 

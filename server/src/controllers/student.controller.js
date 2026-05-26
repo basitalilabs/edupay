@@ -10,7 +10,7 @@ const addStudent = asyncHandler(async(req, res) => {
         throw new Error('Please provide all required fields');
     }
 
-    const existingStudent = await Student.findOne({rollNo, instituteId: req.user.instituteId});
+    const existingStudent = await Student.findOne({rollNo, class: studentClass, instituteId: req.instituteId});
     if(existingStudent){
         res.status(400);
         throw new Error('Student with this roll number already exists');
@@ -62,7 +62,8 @@ const updateStudent = asyncHandler(async(req, res) => {
 
     const student = await Student.findOne({
         _id: req.params.id,
-        instituteId: req.user.instituteId,
+        class: studentClass,
+        instituteId: req.instituteId,
         deletedAt: null
     });
 
@@ -91,7 +92,8 @@ const updateStudent = asyncHandler(async(req, res) => {
 const deleteStudent = asyncHandler(async(req, res) => {
     const student = await Student.findOne({
         _id: req.params.id,
-        instituteId: req.user.instituteId,
+        class: studentClass,
+        instituteId: req.instituteId,
         deletedAt: null
     });
 
