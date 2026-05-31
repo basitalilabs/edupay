@@ -56,19 +56,19 @@ const generateChallan = async (res, data) => {
 
   // ─── TITLE ───
   doc
-    .fontSize(14)
-    .font('Helvetica-Bold')
-    .fillColor('#333333')
-    .text('FEE CHALLAN', { align: 'center' })
+  .fontSize(14)
+  .font('Helvetica-Bold')
+  .fillColor('#333333')
+  .text('FEE CHALLAN', 50, doc.y, { align: 'center', width: 500 })
 
   doc.moveDown(0.5)
 
   // status badge
   const statusColor = challan.status === 'paid' ? '#27ae60' : challan.status === 'expired' ? '#e74c3c' : '#e67e22'
   doc
-    .fontSize(10)
-    .fillColor(statusColor)
-    .text(`Status: ${challan.status.toUpperCase()}`, { align: 'center' })
+  .fontSize(10)
+  .fillColor(statusColor)
+  .text(`Status: ${challan.status.toUpperCase()}`, 50, doc.y, { align: 'center', width: 500 })
 
   doc.moveDown(0.8)
 
